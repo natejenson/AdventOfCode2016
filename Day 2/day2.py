@@ -11,7 +11,7 @@ class Keypad:
         return self.numbers[pos.y][pos.x]
 
     def Move(self, startPos, direction):
-        newPos = startPos
+        newPos = Position(startPos.x, startPos.y)
         if (direction == "U"):
             newPos.y -= 1
         elif (direction == "D"):
@@ -23,8 +23,13 @@ class Keypad:
         else:
             raise "invalid direction: " + str(direction)
 
-        newPos.x = min(max(newPos.x,0),len(self.numbers)-1)
-        newPos.y = min(max(newPos.y,0),len(self.numbers)-1)
+        if ((newPos.x < 0 or newPos.x > len(self.numbers[0]) - 1)
+            or newPos.y < 0 or newPos.y > len(self.numbers)-1):
+            return startPos
+
+        if (self.Number(newPos) == None):
+            return startPos
+
         return newPos
 
 def getCode(keypad, startPos, directions):
@@ -46,3 +51,11 @@ keypad = Keypad([[1,2,3],[4,5,6],[7,8,9]])
 directions = getDirections()
 
 print("Part 1 - Code: ", getCode(keypad, pos, directions))
+
+keypad = Keypad([[None, None, 1, None, None],
+                 [None, 2, 3, 4, None],
+                 [5,6,7,8,9],
+                 [None, "A", "B", "C", None],
+                 [None, None, "D", None, None]])
+
+print("Part 2 - Code: ", getCode(keypad, pos, directions))
