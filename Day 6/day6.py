@@ -11,14 +11,15 @@ def count(lines):
 
     return counts
 
-def decode(counts):
+def decode(counts, comparer = max):
     code = ""
     for index in range(len(counts)):
-        maxIdx = counts[index].index(max(counts[index]))
-        code += chr(ord('a') + maxIdx)
+        targetIdx = counts[index].index(comparer(counts[index]))
+        code += chr(ord('a') + targetIdx)
     return code
 
 lines = getLines()
 counts = count(lines)
 
 print("Part 1 - Decode:", decode(counts))
+print("Part 2 - Decode, again:", decode(counts, min))
